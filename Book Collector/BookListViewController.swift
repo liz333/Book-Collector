@@ -14,13 +14,16 @@ class BookListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet var bookListTV: UITableView!
     
     var books : [Book] = []
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
         
         bookListTV.dataSource = self
         bookListTV.delegate = self
+        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +47,16 @@ class BookListViewController: UIViewController, UITableViewDelegate, UITableView
         cell.textLabel?.text = book.name
         cell.imageView?.image = UIImage(data: book.image!)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let book = books[indexPath.row]
+        performSegue(withIdentifier: "bookSegue", sender: book)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let nextVC = segue.destination as! BookViewController
+        nextVC.book = sender as? Book
     }
     
     

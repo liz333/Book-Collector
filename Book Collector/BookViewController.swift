@@ -9,22 +9,35 @@
 import UIKit
 
 class BookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     @IBOutlet var bookImageView: UIImageView!
     
     @IBOutlet var bookNameText: UITextField!
     
+    @IBOutlet var addUpdateButton: UIButton!
+    
+    @IBOutlet var deleteButton: UIButton!
+    
     var imagePicker = UIImagePickerController()
     
+    var book : Book? = nil
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         imagePicker.delegate = self
         
-        // Do any additional setup after loading the view.
+        if book != nil {
+            bookImageView.image = UIImage(data: book!.image!)
+            bookNameText.text = book!.name
+            addUpdateButton.setTitle("Update", for: .normal)
+        } else {
+            deleteButton.isHidden = true
+        }
     }
-
+    
     @IBAction func photoTapped(_ sender: Any) {
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
@@ -38,22 +51,35 @@ class BookViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     @IBAction func cameraTapped(_ sender: Any) {
+        imagePicker.sourceType = .camera
+        present(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func addTapped(_ sender: Any) {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let book = Book(context: context)
-        book.name = bookNameText.text
-        book.image = UIImageJPEGRepresentation(bookImageView.image!, 0.0)
-        
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        navigationController?.popViewController(animated: true)
+        if book != nil {
+            book!.name = bookNameText.text
+            book!.image = UIImageJPEGRepresentation(bookImageView.image!, 0.0)
+            
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            navigationController?.popViewController(animated: true)
+        } else {
+            let book = Book(context: context)
+            book.name = bookNameText.text
+            book.image = UIImageJPEGRepresentation(bookImageView.image!, 0.0)
+            
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            navigationController?.popViewController(animated: true)
+        }
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func deleteTapped(_ sender: Any) {
+        context.delete(book!)
+         (UIApplication.shared.delegate as! AppDelegate).saveContext()
+         navigationController?.popViewController(animated: true)
     }
-
+    
+    @IBAction func dismissKeyboard(_ sender: Any) {
+        self.bookNameText.endEditing(true)
+    }
+    
 }

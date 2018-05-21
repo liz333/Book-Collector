@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Book List View Controller-->
+        <!--My Book Collector-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="BookListViewController" customModule="Book_Collector" customModuleProvider="target" sceneMemberID="viewController">
@@ -34,10 +34,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="AK0-9l-a8D">
+                    <navigationItem key="navigationItem" title="My Book Collector" id="AK0-9l-a8D">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="qlu-FJ-g1Q"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="arS-T1-WkU">
                             <connections>
-                                <segue destination="6Ly-AX-8fi" kind="show" id="umh-xT-7zP"/>
+                                <segue destination="6Ly-AX-8fi" kind="show" identifier="bookSegue" id="umh-xT-7zP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -63,11 +64,14 @@
                                     <constraint firstAttribute="height" constant="300" id="jeW-Lh-JJY"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Book Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MCH-mT-mXz">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Book Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MCH-mT-mXz">
                                 <rect key="frame" x="48" y="432" width="279" height="30"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="dismissKeyboard:" destination="6Ly-AX-8fi" eventType="editingDidEndOnExit" id="sGx-vd-gTO"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qwp-ZQ-bRK">
                                 <rect key="frame" x="164.5" y="512" width="45" height="42"/>
@@ -75,6 +79,14 @@
                                 <state key="normal" title="Add"/>
                                 <connections>
                                     <action selector="addTapped:" destination="6Ly-AX-8fi" eventType="touchUpInside" id="MOZ-pf-LHQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VhU-03-kbR">
+                                <rect key="frame" x="153" y="574" width="70" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Delete"/>
+                                <connections>
+                                    <action selector="deleteTapped:" destination="6Ly-AX-8fi" eventType="touchUpInside" id="HZq-Lq-7ur"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -86,6 +98,8 @@
                             <constraint firstItem="Qwp-ZQ-bRK" firstAttribute="centerX" secondItem="HTg-xC-GVj" secondAttribute="centerX" id="M0K-8V-Z5B"/>
                             <constraint firstItem="9th-FH-PH9" firstAttribute="top" secondItem="Kwh-iX-Sk8" secondAttribute="top" constant="48" id="Rew-4i-8Dd"/>
                             <constraint firstItem="MCH-mT-mXz" firstAttribute="centerX" secondItem="9th-FH-PH9" secondAttribute="centerX" id="bct-dB-2Y1"/>
+                            <constraint firstItem="VhU-03-kbR" firstAttribute="centerX" secondItem="HTg-xC-GVj" secondAttribute="centerX" id="eHh-7z-nGz"/>
+                            <constraint firstItem="VhU-03-kbR" firstAttribute="top" secondItem="Qwp-ZQ-bRK" secondAttribute="bottom" constant="20" id="nes-wo-PWp"/>
                             <constraint firstItem="Qwp-ZQ-bRK" firstAttribute="top" secondItem="MCH-mT-mXz" secondAttribute="bottom" constant="50" id="nhi-hk-oSc"/>
                             <constraint firstItem="Kwh-iX-Sk8" firstAttribute="trailing" secondItem="9th-FH-PH9" secondAttribute="trailing" constant="48" id="pwl-yh-sr1"/>
                             <constraint firstItem="MCH-mT-mXz" firstAttribute="top" secondItem="9th-FH-PH9" secondAttribute="bottom" constant="20" id="vsg-gP-NRk"/>
@@ -107,8 +121,10 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addUpdateButton" destination="Qwp-ZQ-bRK" id="a8b-zp-0hs"/>
                         <outlet property="bookImageView" destination="9th-FH-PH9" id="A9N-lO-cAt"/>
                         <outlet property="bookNameText" destination="MCH-mT-mXz" id="Q45-l5-NAc"/>
+                        <outlet property="deleteButton" destination="VhU-03-kbR" id="8rn-4E-4NF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WnG-2u-cos" userLabel="First Responder" sceneMemberID="firstResponder"/>
